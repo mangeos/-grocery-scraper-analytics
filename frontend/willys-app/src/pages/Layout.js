@@ -26,10 +26,11 @@ const Layout = () => {
         <Outlet />
         <footer>
           <ul>
-            <li>testar</li>
-            <li>testar</li>
-            <li>testar</li>
-            <li>testar</li>
+            <li>Kontakt</li>
+            <li>email@email.com</li>
+          </ul>
+          <ul style={{ borderLeft: "0.5px solid" }}>
+            <li>copyright 2023</li>
           </ul>
         </footer>
       </div>

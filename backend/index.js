@@ -9,7 +9,7 @@ app.use(bodyParser.json({ type: "application/*+json" }));
 //app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 // Startar webb skrapningen, tanken är att den ska köras en gång varje vecka
-require("./services/webScraping");
+//require("./services/webScraping");
 
 // Routes
 const products = require("./routes/products");

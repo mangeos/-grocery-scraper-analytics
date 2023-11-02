@@ -62,4 +62,16 @@ h1 {
 footer {
   /* Behåll fotern längst ner på sidan */
   margin-top: auto;
+  display: flex;
+  justify-content: space-around;
+  background-color: #1d2a35;
+  color: antiquewhite;
+}
+footer ul {
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
 }
