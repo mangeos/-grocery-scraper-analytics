@@ -1,14 +1,11 @@
 // api/apiRequests.js
 
-/*
-const API_URL = "https://example.com/api"; // Ersätt detta med din faktiska API URL
-
+const API_URL = "http://localhost:3003"; // Ersätt detta med din faktiska API URL
 
 const apiRequests = {
   getSomeData: async () => {
-  
     try {
-      const response = await fetch(`${API_URL}/someEndpoint`);
+      const response = await fetch(`${API_URL}/`);
       if (response.ok) {
         const data = await response.json();
         return data;
@@ -44,4 +41,3 @@ const apiRequests = {
 };
 
 export default apiRequests;
-*/
