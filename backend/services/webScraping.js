@@ -21,7 +21,7 @@ function jmf1(e) {
   if (match) {
     const jmfPrice = match[1];
     //console.log("Jmf-pris:", jmfPrice);
-    return Number(jmfPrice.replace(",", "."));
+    return parseFloat(jmfPrice.replace(",", "."));
   } else {
     return null;
   }

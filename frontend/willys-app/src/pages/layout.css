@@ -55,8 +55,9 @@ h1 {
 .content {
   display: flex;
   /* flex: 1 0 auto; */
-  justify-content: center;
-  /* Lägg till andra stilar för att definiera innehållsområdet */
+  /* justify-content: center; */
+  align-items: center;
+  flex-direction: column;
 }
 
 footer {
