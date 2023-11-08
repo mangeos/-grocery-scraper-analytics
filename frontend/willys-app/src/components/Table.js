@@ -20,13 +20,13 @@ const Table = ({ data, getFormattedDate }) => {
           </tr>
         </thead>
         <tbody>
-          {data ? (
+          {data && data.length > 0 ? (
             data.map((item, i) => (
               <tr
                 style={
                   i % 2 === 0
-                    ? { background: "antiquewhite" }
-                    : { background: "white" }
+                    ? { background: "#1E222E" }
+                    : { background: "#2A2D3E" }
                 }
                 key={i}
               >
@@ -48,9 +48,7 @@ const Table = ({ data, getFormattedDate }) => {
                 <i
                   className="fa fa-spinner w3-spin"
                   style={{ fontSize: "64px" }}
-                >
-                  .
-                </i>
+                ></i>
               </td>
             </tr>
           )}

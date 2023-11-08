@@ -61,7 +61,9 @@ const Home = () => {
             alignItems: "center",
           }}
         >
-          <label htmlFor="date">Datum:</label>
+          <label style={{ color: "white" }} htmlFor="date">
+            Datum:
+          </label>
           <input
             type="date"
             id="date"
