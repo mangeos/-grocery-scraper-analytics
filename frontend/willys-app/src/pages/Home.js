@@ -4,12 +4,12 @@ import Table from "./../components/Table";
 const Home = () => {
   const [data, setData] = useState(null);
   const [modifiedData, setModifiedData] = useState(null);
-  const [a, setA] = useState(20);
+const [numberOfDisplayedItems, setNumberOfDisplayedItems] = useState(20);
   // Senaste veckans datum - nu ändrar jag manuellt
   const [date, setDate] = useState(getFormattedDate(new Date()));
   const prevDateRef = useRef();
   // Senaste veckans datum - nu ändrar jag manuellt
-  prevDateRef.current = getFormattedDate(new Date());
+
   // Skapar en ref för att lagra det föregående date-värdet
 
   function getFormattedDate(date) {
@@ -24,6 +24,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      
       try {
         const apiData = await apiRequests.getData(date);
         console.log("Hämtad data:", apiData);
@@ -32,20 +33,34 @@ const Home = () => {
         console.error("Något gick fel:", error);
       }
     };
-
-    fetchData();
+     // Kontrollera om det är första gången useEffect körs
+    if (prevDateRef.current !== date) {
+      fetchData();
+      prevDateRef.current = date;
+    }
+   
   }, [date]);
 
   useEffect(() => {
     if (data !== null) {
-      setModifiedData(data.slice(0, a));
-      console.log("data");
+      setModifiedData(data.slice(0, numberOfDisplayedItems));
+      // console.log("data");
     }
-  }, [data, a]);
+  }, [data, numberOfDisplayedItems]);
 
   const handleChange = async (event) => {
     setDate(event.target.value);
   };
+
+  const handlePush = async () => {
+    try {
+      const apiData = await apiRequests.startWebbScraping();
+      console.log("Hämtad data:", apiData);
+    } catch (error) {
+      console.error("Något gick fel:", error);
+    }
+  };
+
   return (
     <>
       <div className="content">
@@ -72,6 +87,7 @@ const Home = () => {
             onChange={handleChange}
           ></input>
         </div>
+        <button onClick={() => handlePush()}>Webbskrapa</button>
         <Table data={modifiedData} getFormattedDate={getFormattedDate} />
       </div>
       <div
@@ -79,7 +95,7 @@ const Home = () => {
       >
         <button
           onClick={() => {
-            setA((prevA) => prevA + 20);
+           setNumberOfDisplayedItems((prevCount) => prevCount + 20);
           }}
         >
           Ladda fler...

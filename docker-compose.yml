@@ -1,0 +1,32 @@
+version: "3"
+services:
+  frontend:
+    build:
+      context: ./frontend/willys-app
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000" # <värdmaskinens port>:<containerns port>
+    depends_on:
+      - mysql
+  backend:
+    build:
+      context: ./backend # Skapa en mapp 'backend' med din Flask-app och Dockerfil
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3003" # <värdmaskinens port>:<containerns port>
+    depends_on:
+      - mysql
+  mysql:
+    image: "mysql:8.0"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: product_development
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+    ports:
+      - "3308:3306" # <värdmaskinens port>:<containerns port>
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "mysql"]
+      interval: 10s
+      timeout: 5s
+      retries: 3

@@ -1,5 +1,5 @@
 const puppeteer = require("puppeteer");
-const { Product } = require("./../models"); // Importera din Sequelize-modell
+const {Product} = require('./../models/product');
 
 function getLatestJmfPrice(allproducts) {
   for (const value in allproducts) {
@@ -173,7 +173,9 @@ async function scrapeAll(url) {
   try {
     // Din befintliga kod här
     // Starta en ny webbläsarinstans
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      args: ["--no-sandbox"],
+    });
 
     // Öppna en ny sida i webbläsaren
     const page = await browser.newPage();
@@ -190,6 +192,8 @@ async function scrapeAll(url) {
 
     // skafferi https://www.willys.se/sortiment/skafferi
     //await page.goto("https://www.willys.se/sortiment/skafferi");
+   
+  
     for (let i = 0; i < 20; i++) {
       await page.evaluate(() => {
         const element = document.body;
@@ -202,7 +206,7 @@ async function scrapeAll(url) {
       //await page.waitForTimeout(1000);
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
-
+  
     /* -------------------------------------------------------------------------------------*/
     /*----------------------Hämtar alla <a> taggar med href /produkt/*---------------------*/
     let hrefResult = await page.evaluate(() => {
@@ -353,7 +357,7 @@ async function scrapeAll(url) {
         return Product.bulkCreate(result);
       })
       .then((newProducts) => {
-        console.log("Nya produkter skapade:", newProducts);
+        console.log(newProducts.length, ": Nya produkter skapade:");
       })
       .catch((error) => {
         console.error("Fel vid skapande av produkter:", error);
@@ -381,12 +385,17 @@ async function scrapeAll(url) {
   }
 }
 
+
 let urlArray = [
   "https://www.willys.se/sortiment/kott-chark-och-fagel",
   "https://www.willys.se/sortiment/mejeri-ost-och-agg",
   "https://www.willys.se/sortiment/fisk-och-skaldjur",
   "https://www.willys.se/sortiment/skafferi",
 ];
+
+// let urlArray = [
+//   "https://www.willys.se/sortiment/kott-chark-och-fagel"
+// ]
 // Kör en i taget, annars spårar det ur totalt
 async function runAll(urlArray) {
   for (const url of urlArray) {

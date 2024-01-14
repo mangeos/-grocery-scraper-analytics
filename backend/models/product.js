@@ -1,38 +1,62 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const { Sequelize, DataTypes } = require('sequelize');
 
-module.exports = (sequelize, DataTypes) => {
-  class Product extends Model {
-    static associate(models) {
-      // Define associations here
-    }
-  }
+const sequelize = new Sequelize('product_development', 'root', 'password', {
+  host: 'localhost',
+  dialect: 'mysql',
+});
 
-  Product.init(
-    {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
-      },
-      href: DataTypes.STRING,
-      product: DataTypes.STRING,
-      jmfPrice: DataTypes.DECIMAL, // DECIMAL with precision 5 and 2 decimal places
-      energi1: DataTypes.DECIMAL,
-      energi2: DataTypes.DECIMAL,
-      fat: DataTypes.DECIMAL,
-      saturatedFat: DataTypes.DECIMAL,
-      carb: DataTypes.STRING,
-      suger: DataTypes.DECIMAL,
-      protein: DataTypes.DECIMAL,
-      salt: DataTypes.DECIMAL,
-    },
-    {
-      sequelize,
-      tableName: "Products",
-    }
-  );
+const Product = sequelize.define('Product', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
+  },
+  href: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  product: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  jmfPrice: {
+    type: DataTypes.DECIMAL(5, 2),
+    allowNull: true,
+  },
+  energi1: {
+    type: DataTypes.DECIMAL(5, 2),
+    allowNull: true,
+  },
+  energi2: {
+    type: DataTypes.DECIMAL(5, 2),
+    allowNull: true,
+  },
+  fat: {
+    type: DataTypes.DECIMAL(5, 2),
+    allowNull: true,
+  },
+  saturatedFat: {
+    type: DataTypes.DECIMAL(5, 2),
+    allowNull: true,
+  },
+  carb: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  suger: {
+    type: DataTypes.DECIMAL(5, 2),
+    allowNull: true,
+  },
+  protein: {
+    type: DataTypes.DECIMAL(5, 2),
+    allowNull: true,
+  },
+  salt: {
+    type: DataTypes.DECIMAL(5, 2),
+    allowNull: true,
+  },
+});
 
-  return Product;
-};
+module.exports = {Product, sequelize};
