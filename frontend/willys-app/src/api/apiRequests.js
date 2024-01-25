@@ -1,6 +1,6 @@
 // api/apiRequests.js
 
-const API_URL = "http://localhost:3003"; // Ersätt detta med din faktiska API URL
+const API_URL = "http://localhost:3003";
 
 const apiRequests = {
   getSomeData: async () => {
@@ -61,8 +61,20 @@ const apiRequests = {
       throw new Error("Error:", error);
     }
   },
-
-  // And other API request functions...
+  getProductData: async (param) => {
+    try {
+      const response = await fetch(`${API_URL}/product/${param}`);
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      } else {
+        throw new Error("Failed to fetch data");
+      }
+    } catch (error) {
+      throw new Error("Error:", error);
+    }
+  },
+  // And other API request functions... localhost:3003/product/Vetemjol-101145716_ST
 };
 
 export default apiRequests;

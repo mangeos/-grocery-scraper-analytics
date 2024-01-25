@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import apiRequests from "./../api/apiRequests"; // Importera din fil med API-förfrågningar
 import Table from "./../components/Table";
+
 const Home = () => {
   const [data, setData] = useState(null);
   const [modifiedData, setModifiedData] = useState(null);
@@ -72,13 +73,10 @@ const [numberOfDisplayedItems, setNumberOfDisplayedItems] = useState(20);
             width: "30%",
             height: "119px",
             /* gap: 41px; */
-            /* justify-content: center; */
+            justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <label style={{ color: "white" }} htmlFor="date">
-            Datum:
-          </label>
           <input
             type="date"
             id="date"
@@ -93,7 +91,7 @@ const [numberOfDisplayedItems, setNumberOfDisplayedItems] = useState(20);
       <div
         style={{ justifyContent: "center", display: "flex", margin: "20px" }}
       >
-        <button
+        <button className="load-more-button"
           onClick={() => {
            setNumberOfDisplayedItems((prevCount) => prevCount + 20);
           }}

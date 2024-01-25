@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const {Product, sequelize} = require("../models/product"); // Importera dina Sequelize-modeller
+const scraper = require("../services/webScraping");
 
 // localhost:1337/api/v01/bike - hämtar alla bikes.
-router.get("/", async (req, res, next) => {
-  console.log("Time: ", Date.now());
+router.get("/", async (req, res) => {
   try {
     const query = `
   SELECT ((protein*10)/jmfPrice) as proteinPerKrona, id, product, energi2 as kcal, href 
@@ -28,9 +28,8 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// localhost:1337/api/v01/bike - hämtar alla bikes.
-router.get("/:param", async (req, res, next) => {
-  console.log("Time: ", Date.now());
+// localhost:1337/api/v01/bike - hämtar alla products.
+router.get("/:param", async (req, res) => {
   try {
     const paramValue = req.params.param;
     console.log(paramValue);
@@ -63,10 +62,35 @@ ORDER BY proteinPerKrona DESC;
   }
 });
 
-router.get("/start/1", async (req, res, next) => {
+router.get("/product/:id", async (req, res) => {
   try {
-    require("../services/webScraping");
-    res.status(200).send({ Success: "WebbScraping Started", status: 200 });
+    const paramValue = req.params.id;
+    console.log(paramValue);
+
+    const query = `
+    SELECT * FROM products 
+    WHERE product = "${paramValue}" 
+    ORDER BY createdAt ASC;
+
+`;
+    // Kör frågan genom sequelize.query
+    let result = await sequelize.query(query, {
+      type: sequelize.QueryTypes.SELECT,
+    });
+
+    if (result.length < 1) {
+      res.status(404).send({  error: 'Produkten kunde inte hittas.' } );        
+    } else {
+      let prisUtveckling = [];
+      for (let index = 0; index < result.length; index++) {
+        prisUtveckling.push(parseFloat(result[index].jmfPrice).toFixed(2));  
+      }
+      let utvecklingLength = prisUtveckling.length;
+      result.push({"prisUtveckling1" : ((prisUtveckling[0] - prisUtveckling[1]) / prisUtveckling[1] * 100).toFixed(2)})
+      result.push({"prisUtveckling2" : ((prisUtveckling[0] - prisUtveckling[utvecklingLength-1]) / prisUtveckling[utvecklingLength-1] * 100).toFixed(2)})
+   
+      res.status(200).send({ result: result, status: 200 });
+    }
   } catch (error) {
     console.error("Något gick fel:", error);
     res.status(400).send(error);

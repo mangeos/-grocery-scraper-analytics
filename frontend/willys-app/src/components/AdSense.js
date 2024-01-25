@@ -1,12 +1,6 @@
-import React, { useEffect } from "react";
-//import { Helmet } from "react-helmet";
+import React from "react";
 
 const AdSense = () => {
-  // useEffect(() => {
-  //   if (window) {
-  //     (window.adsbygoogle = window.adsbygoogle || []).push({});
-  //   }
-  // }, []);
   return (
     <div
       style={{

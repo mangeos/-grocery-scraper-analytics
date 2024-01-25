@@ -397,10 +397,11 @@ let urlArray = [
 //   "https://www.willys.se/sortiment/kott-chark-och-fagel"
 // ]
 // Kör en i taget, annars spårar det ur totalt
-async function runAll(urlArray) {
+async function runAll() {
   for (const url of urlArray) {
     await new Promise((resolve) => setTimeout(resolve, 60000));
     await scrapeAll(url);
   }
 }
-runAll(urlArray);
+
+module.exports = { runAll };
