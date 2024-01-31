@@ -1,6 +1,6 @@
 // api/apiRequests.js
 
-const API_URL = "http://localhost:3003";
+const API_URL = "http://192.168.1.89:3003";
 
 const apiRequests = {
   getSomeData: async () => {

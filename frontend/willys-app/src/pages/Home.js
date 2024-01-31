@@ -85,7 +85,7 @@ const [numberOfDisplayedItems, setNumberOfDisplayedItems] = useState(20);
             onChange={handleChange}
           ></input>
         </div>
-        <button onClick={() => handlePush()}>Webbskrapa</button>
+        {/* <button onClick={() => handlePush()}>Webbskrapa</button> */}
         <Table data={modifiedData} getFormattedDate={getFormattedDate} />
       </div>
       <div

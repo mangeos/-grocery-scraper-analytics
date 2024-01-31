@@ -7,7 +7,7 @@ const Table = ({ data, getFormattedDate }) => {
 */
 
   return (
-    <>
+    <div className="overflow">
       <table className="table">
         <thead>
           <tr>
@@ -54,7 +54,7 @@ const Table = ({ data, getFormattedDate }) => {
           )}
         </tbody>
       </table>
-    </>
+    </div>
   );
 };
 

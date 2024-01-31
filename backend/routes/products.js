@@ -20,11 +20,22 @@ router.get("/", async (req, res) => {
       type: sequelize.QueryTypes.SELECT,
     });
 
-    //console.log(result);
     res.status(200).send(result);
   } catch (error) {
     console.error("Något gick fel:", error);
-    res.status(200).send("määä");
+    res.status(400).send("määä");
+  }
+});
+
+
+// localhost:1337/api/v01/bike - hämtar alla bikes.
+router.get("/start/1", async (req, res) => {
+  try {
+    await scraper.runAll();
+    res.status(200).send(result);
+  } catch (error) {
+    console.error("Något gick fel:", error);
+    res.status(400).send("määä");
   }
 });
 
@@ -32,11 +43,13 @@ router.get("/", async (req, res) => {
 router.get("/:param", async (req, res) => {
   try {
     const paramValue = req.params.param;
+    
     console.log(paramValue);
     const query = `SELECT 
     CASE
-        WHEN product LIKE '%agg-%' THEN 7 / jmfPrice
-        ELSE (protein * 10) / jmfPrice
+      WHEN product LIKE '%agg-%' 
+        THEN ROUND(7 / jmfPrice, 2)
+        ELSE ROUND((protein * 10) / jmfPrice, 2)
     END AS proteinPerKrona,
     id,
     product,
@@ -46,19 +59,21 @@ FROM products
 WHERE 
     product NOT LIKE '%buljong%'
     AND product NOT LIKE '%potatismos%'
-    AND createdAt LIKE '${paramValue}%'
+    AND createdAt LIKE :date
 ORDER BY proteinPerKrona DESC;
 
 `;
     // Kör frågan genom sequelize.query
     const result = await sequelize.query(query, {
       type: sequelize.QueryTypes.SELECT,
+      replacements: {date: paramValue+"%"}
     });
 
     //console.log(result);
     res.send(result);
   } catch (error) {
-    console.error("Något gick fel:", error);
+    console.error("Något gick feil:", error);
+    res.send("error");
   }
 });
 
@@ -69,13 +84,14 @@ router.get("/product/:id", async (req, res) => {
 
     const query = `
     SELECT * FROM products 
-    WHERE product = "${paramValue}" 
+    WHERE product = :id 
     ORDER BY createdAt ASC;
 
 `;
     // Kör frågan genom sequelize.query
     let result = await sequelize.query(query, {
       type: sequelize.QueryTypes.SELECT,
+      replacements:{id: paramValue}
     });
 
     if (result.length < 1) {

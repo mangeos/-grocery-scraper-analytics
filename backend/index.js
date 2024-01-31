@@ -5,8 +5,8 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const port = 3003;
-
-app.use(cors());
+const corsOptions = {origin:"*"}
+app.use(cors(corsOptions));
 app.use(bodyParser.json({ type: 'application/*+json' }));
 
 const cron = require('node-cron');
